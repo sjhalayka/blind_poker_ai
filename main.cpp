@@ -22,7 +22,7 @@ int main(void)
     double max_error_rate = 0.00001;
     double error_rate = 0;
     
-    size_t max_training_sessions = 1000;
+    size_t max_training_sessions = 10000;
 	size_t num_training_sessions = 0;
     
     vector<FFBPNeuralNet> NNets;
@@ -33,7 +33,7 @@ int main(void)
         vector<size_t> HiddenLayers;
         HiddenLayers.push_back(14);
         FFBPNeuralNet NNet(208, HiddenLayers, 1);
-        NNet.SetLearningRate(1.0);
+        NNet.SetLearningRate(0.01);
         NNet.SetMomentum(1.0);
         
         NNets.push_back(NNet);
@@ -70,14 +70,15 @@ int main(void)
             bpt.play_rand();
             
             for(size_t j = 1; j < NUM_PLAYERS; j++)
-                bpt.play_AI(nnet_io[j - 1], NNets[j - 1]);
+                bpt.play_ANN(nnet_io[j - 1], NNets[j - 1]);
         }
 
+        // Determine the winner
         size_t index = bpt.get_best_rank();
 
         error_rate = 0;
 
-        // for each losing AI
+        // for each ANN
         for(size_t i = 1; i < NUM_PLAYERS; i++)
         {
             // if winner, do nothing
@@ -123,7 +124,7 @@ int main(void)
                     
         num_training_sessions++;
     }
-    while(error_rate >= max_error_rate && num_training_sessions < max_training_sessions);
+    while(/*error_rate >= max_error_rate &&*/ num_training_sessions < max_training_sessions);
     
 
     
