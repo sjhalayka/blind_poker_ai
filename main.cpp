@@ -27,12 +27,30 @@ int main(void)
     
     vector<FFBPNeuralNet> NNets;
     
+#ifdef USE_ONE_HOT_INPUT_ENCODING
+    
+    cout << "Using one hot input encoding" << endl;
+    
+#endif
+    
+    
     for(size_t i = 0; i < NUM_PLAYERS - 1; i++)
     {
         // create a network of 208 input neurons, one hidden layer of 14 neurons, and 1 output neuron
         vector<size_t> HiddenLayers;
+        
+#ifdef USE_ONE_HOT_INPUT_ENCODING
+        
+        HiddenLayers.push_back(20);
+        FFBPNeuralNet NNet(416, HiddenLayers, 1);
+       
+#else
+
         HiddenLayers.push_back(14);
         FFBPNeuralNet NNet(208, HiddenLayers, 1);
+        
+#endif
+        
         NNet.SetLearningRate(1.0);
         NNet.SetMomentum(1.0);
         

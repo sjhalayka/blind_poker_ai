@@ -214,6 +214,129 @@ void blind_poker_table::get_card_states(vector<double> &states)
         
         switch(position)
         {
+                
+#ifdef USE_ONE_HOT_INPUT_ENCODING
+                
+            case POSITION_HAND0:
+            {
+                // 0
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_HAND1:
+            {
+                // 1
+                states.push_back(1);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_HAND2:
+            {
+                // 2
+                states.push_back(0);
+                states.push_back(1);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_HAND3:
+            {
+                // 3
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(1);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_HAND4:
+            {
+                // 4
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(1);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_DISCARD_PILE:
+            {
+                // 5
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(1);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_TOP_OF_DISCARD_PILE:
+            {
+                // 6
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(1);
+                states.push_back(0);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_TOP_OF_PICKUP_PILE:
+            {
+                // 7
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(1);
+                states.push_back(0);
+                break;
+            }
+            case POSITION_UNCOVERED:
+            {
+                // 8
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(0);
+                states.push_back(1);
+                break;
+            }
+
+#else
+                
             case POSITION_HAND0:
             {
                 // 0
@@ -295,6 +418,8 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 states.push_back(0);
                 break;
             }
+                
+#endif
         }
     }
 }
