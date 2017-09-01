@@ -122,26 +122,6 @@ int main(void)
             
             cout << "Error rate = " << error_rate << endl;
         }
-  
-        
-        
-        
-        
-     /*
-        // An AI won
-        if(index > 0)
-        {
-            for(size_t i = 0; i < nnet_io[index - 1].size(); i++)
-            {
-                // this does nothing to the weights, it's a waste of time and space
-                NNets[index - 1].FeedForward(nnet_io[index - 1][i].input);
-                error_rate += NNets[index - 1].BackPropagate(nnet_io[index - 1][i].output);
-            }
-            
-            cout << error_rate / nnet_io[index - 1].size() << endl;
-        }
-       */
-                    
                     
         num_training_sessions++;
     }
