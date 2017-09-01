@@ -33,7 +33,7 @@ int main(void)
         vector<size_t> HiddenLayers;
         HiddenLayers.push_back(14);
         FFBPNeuralNet NNet(208, HiddenLayers, 1);
-        NNet.SetLearningRate(0.01);
+        NNet.SetLearningRate(1.0);
         NNet.SetMomentum(1.0);
         
         NNets.push_back(NNet);
@@ -56,7 +56,7 @@ int main(void)
         //
         // total 1 + 2 + 3 + 4 = 10 ANNs
         
-        //if(num_training_sessions % 10 == 0)
+        if(num_training_sessions % 10 == 0)
             cout << num_training_sessions << endl;
         
         // play game
@@ -85,9 +85,14 @@ int main(void)
             if(index == i)
                 continue;
             
-            // if loser, switch ~0 for ~1 and ~1 for ~0
+            // if loser, switch ~0 for 1 and ~1 for 0            
             for(size_t j = 0; j < nnet_io[i - 1].size(); j++)
-                nnet_io[i - 1][j].output[0] = 1.0 - nnet_io[i - 1][j].output[0];
+            {
+                if(0 == floor(nnet_io[i - 1][j].output[0] + 0.5))
+                    nnet_io[i - 1][j].output[0] = 1;
+                else
+                    nnet_io[i - 1][j].output[0] = 0;
+            }
             
             // train network using nnet_io
             for(size_t j = 0; j < nnet_io[i - 1].size(); j++)
@@ -99,7 +104,7 @@ int main(void)
             if(0 != nnet_io[i - 1].size())
                 error_rate /= nnet_io[i - 1].size();
             
-           cout << "Error rate = " << error_rate << endl;
+           // cout << "Error rate = " << error_rate << endl;
         }
   
         
