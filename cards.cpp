@@ -585,14 +585,6 @@ size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index)
     return uncovered_positions[rand() % uncovered_positions.size()];
 }
 
-void blind_poker_table::sort_hand(const size_t player_index)
-{
-    if(player_index >= NUM_PLAYERS)
-        return;
-    
-    sort(players_hands[player_index].begin(), players_hands[player_index].end());
-}
-
 size_t blind_poker_table::get_best_rank(void)
 {
     size_t best_rank = 0;

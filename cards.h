@@ -87,7 +87,6 @@ public:
     void play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet);
     
     size_t get_rand_uncovered_index(const size_t player_index);
-    void sort_hand(const size_t player_index);
     size_t get_best_rank(void);
     size_t rank_hand(const size_t player_index) const;
     
