@@ -41,13 +41,13 @@ int main(void)
         
 #ifdef USE_ONE_HOT_INPUT_ENCODING
         
-        HiddenLayers.push_back(20);
-        FFBPNeuralNet NNet(416, HiddenLayers, 1);
+        HiddenLayers.push_back(20); // sqrt(416) == 20
+        FFBPNeuralNet NNet(416, HiddenLayers, 1); // 52*8 == 416
        
 #else
 
-        HiddenLayers.push_back(14);
-        FFBPNeuralNet NNet(208, HiddenLayers, 1);
+        HiddenLayers.push_back(14); // sqrt(208) == 14
+        FFBPNeuralNet NNet(208, HiddenLayers, 1); // 52*4 = 208
         
 #endif
         
