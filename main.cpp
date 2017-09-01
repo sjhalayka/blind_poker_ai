@@ -43,8 +43,6 @@ int main(void)
     {
         // keep track of card states / binary choices
         
-        // if the game is won by the AI, use them as inputs to the feedfoward and backpropagate function
-        
         // have a different copy of the AI for 2 players, 3 players, 4 players, 5 players
         
         // have a different copy of the AI for 1st player, 2nd, 3rd, etc.
@@ -85,7 +83,7 @@ int main(void)
             if(index == i)
                 continue;
             
-            // if loser, switch ~0 for 1 and ~1 for 0            
+            // if loser, switch ~0 for 1 and ~1 for 0
             for(size_t j = 0; j < nnet_io[i - 1].size(); j++)
             {
                 if(0 == floor(nnet_io[i - 1][j].output[0] + 0.5))
@@ -104,7 +102,7 @@ int main(void)
             if(0 != nnet_io[i - 1].size())
                 error_rate /= nnet_io[i - 1].size();
             
-           // cout << "Error rate = " << error_rate << endl;
+            cout << "Error rate = " << error_rate << endl;
         }
   
         
