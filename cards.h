@@ -16,7 +16,7 @@ using std::shuffle;
 #include "ffbpneuralnet.h"
 
 
-// #define USE_ONE_HOT_INPUT_ENCODING
+#define USE_ONE_HOT_INPUT_ENCODING
 
 
 #define SUIT_HEARTS 0

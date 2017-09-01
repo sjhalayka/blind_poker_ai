@@ -217,9 +217,12 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 
 #ifdef USE_ONE_HOT_INPUT_ENCODING
                 
+            // 9 neurons per state
+            
             case POSITION_HAND0:
             {
                 // 0
+                states.push_back(1);
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
@@ -233,6 +236,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
             case POSITION_HAND1:
             {
                 // 1
+                states.push_back(0);
                 states.push_back(1);
                 states.push_back(0);
                 states.push_back(0);
@@ -247,6 +251,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
             {
                 // 2
                 states.push_back(0);
+                states.push_back(0);
                 states.push_back(1);
                 states.push_back(0);
                 states.push_back(0);
@@ -259,6 +264,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
             case POSITION_HAND3:
             {
                 // 3
+                states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(1);
@@ -275,6 +281,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
+                states.push_back(0);
                 states.push_back(1);
                 states.push_back(0);
                 states.push_back(0);
@@ -285,6 +292,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
             case POSITION_DISCARD_PILE:
             {
                 // 5
+                states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
@@ -303,6 +311,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
+                states.push_back(0);
                 states.push_back(1);
                 states.push_back(0);
                 states.push_back(0);
@@ -311,6 +320,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
             case POSITION_TOP_OF_PICKUP_PILE:
             {
                 // 7
+                states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
@@ -331,11 +341,13 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 states.push_back(0);
                 states.push_back(0);
                 states.push_back(0);
+                states.push_back(0);
                 states.push_back(1);
                 break;
             }
 
 #else
+            // 4 neurons per state
                 
             case POSITION_HAND0:
             {

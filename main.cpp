@@ -41,8 +41,8 @@ int main(void)
         
 #ifdef USE_ONE_HOT_INPUT_ENCODING
         
-        HiddenLayers.push_back(20); // sqrt(416) == 20
-        FFBPNeuralNet NNet(416, HiddenLayers, 1); // 52*8 == 416
+        HiddenLayers.push_back(22); // sqrt(468) == 22
+        FFBPNeuralNet NNet(468, HiddenLayers, 1); // 52*9 == 468
        
 #else
 
