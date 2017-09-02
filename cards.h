@@ -53,6 +53,19 @@ using std::shuffle;
 #define POSITION_UNCOVERED 8
 
 
+#define HIGH_CARD 0
+#define ONE_PAIR 1
+#define TWO_PAIR 2
+#define THREE_OF_A_KIND 3
+#define STRAIGHT 4
+#define FLUSH 5
+#define FULL_HOUSE 6
+#define FOUR_OF_A_KIND 7
+#define STRAIGHT_FLUSH 8
+#define ROYAL_FLUSH 9
+
+
+
 class card
 {
 public:
@@ -88,7 +101,21 @@ public:
     
     size_t get_rand_uncovered_index(const size_t player_index);
     size_t get_best_rank(void);
-    size_t rank_hand(const size_t player_index) const;
+    size_t rank_finished_hand(const size_t player_index) const;
+    
+    bool is_finished_hand_royal_flush(const size_t player_index) const;
+    bool is_finished_hand_straight_flush(const size_t player_index) const;
+    bool is_finished_hand_4_of_a_kind(const size_t player_index) const;
+    bool is_finished_hand_full_house(const size_t player_index) const;
+    bool is_finished_hand_flush(const size_t player_index) const;
+    bool is_finished_hand_straight(const size_t player_index) const;
+    bool is_finished_hand_3_of_a_kind(const size_t player_index) const;
+    bool is_finished_hand_2_pair(const size_t player_index) const;
+    bool is_finished_hand_1_pair(const size_t player_index) const;
+    bool is_finished_hand_high_card(const size_t player_index) const;
+    
+    
+    
     
     void swap_cards(card &a, card &b);
     

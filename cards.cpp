@@ -592,9 +592,9 @@ size_t blind_poker_table::get_best_rank(void)
     
     for(size_t i = 0; i < NUM_PLAYERS; i++)
     {
-        if(rank_hand(i) > best_rank)
+        if(rank_finished_hand(i) > best_rank)
         {
-            best_rank = rank_hand(i);
+            best_rank = rank_finished_hand(i);
             best_rank_player = i;
         }
     }
@@ -602,26 +602,43 @@ size_t blind_poker_table::get_best_rank(void)
     return best_rank_player;
 }
 
-size_t blind_poker_table::rank_hand(const size_t player_index) const
+size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
 {
     if(player_index >= NUM_PLAYERS)
         return 0;
+ 
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        if(false == players_hands[player_index][i].uncovered)
+        {
+            cout << "Tried to rank unfinished hand!" << endl;
+            return 0;
+        }
+    }
     
     size_t ret = 0;
     
-    vector<card> temp_hand = players_hands[player_index];
-    
-    sort(temp_hand.begin(), temp_hand.end());
-    
-    // Note: FACE_A is defined to be 12
-    size_t offset = FACE_A + 1;
-    
-    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-    {
-        ret += temp_hand[i].face * offset;
-        offset *= FACE_A + 1;
-    }
-    
+    if(is_finished_hand_royal_flush(player_index))
+        ret = ROYAL_FLUSH;
+    else if(is_finished_hand_straight_flush(player_index))
+        ret = STRAIGHT_FLUSH;
+    else if(is_finished_hand_4_of_a_kind(player_index))
+        ret = FOUR_OF_A_KIND;
+    else if(is_finished_hand_full_house(player_index))
+        ret = FULL_HOUSE;
+    else if(is_finished_hand_flush(player_index))
+        ret = FLUSH;
+    else if(is_finished_hand_straight(player_index))
+        ret = STRAIGHT;
+    else if(is_finished_hand_3_of_a_kind(player_index))
+        ret = THREE_OF_A_KIND;
+    else if(is_finished_hand_2_pair(player_index))
+        ret = TWO_PAIR;
+    else if(is_finished_hand_1_pair(player_index))
+        ret = ONE_PAIR;
+    else if(is_finished_hand_high_card(player_index))
+        ret = HIGH_CARD;
+
     return ret;
 }
 
@@ -632,6 +649,61 @@ void blind_poker_table::swap_cards(card &a, card &b)
     b = temp_card;
 }
 
+bool blind_poker_table::is_finished_hand_royal_flush(const size_t player_index) const
+{
+    
+    return false;
+}
 
+bool blind_poker_table::is_finished_hand_straight_flush(const size_t player_index) const
+{
+    
+    return false;
+}
 
+bool blind_poker_table::is_finished_hand_4_of_a_kind(const size_t player_index) const
+{
+    
+    return false;
+}
 
+bool blind_poker_table::is_finished_hand_full_house(const size_t player_index) const
+{
+    return false;
+    
+}
+
+bool blind_poker_table::is_finished_hand_flush(const size_t player_index) const
+{
+    return false;
+    
+}
+
+bool blind_poker_table::is_finished_hand_straight(const size_t player_index) const
+{
+        return false;
+    
+}
+
+bool blind_poker_table::is_finished_hand_3_of_a_kind(const size_t player_index) const
+{
+        return false;
+    
+}
+
+bool blind_poker_table::is_finished_hand_2_pair(const size_t player_index) const
+{
+        return false;
+    
+}
+
+bool blind_poker_table::is_finished_hand_1_pair(const size_t player_index) const
+{
+        return false;
+    
+}
+
+bool blind_poker_table::is_finished_hand_high_card(const size_t player_index) const
+{
+    return true;
+}
