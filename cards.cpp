@@ -568,7 +568,7 @@ void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &N
         current_player++;
 }
 
-size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index)
+size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index) const
 {
     if(player_index >= NUM_PLAYERS)
         return 0;
@@ -586,16 +586,22 @@ size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index)
 }
 
 // need to handle †ies
-size_t blind_poker_table::get_best_rank(void)
+size_t blind_poker_table::get_best_rank(void) const
 {
     size_t best_rank = 0;
+    size_t best_numeric_rank = 0;
     size_t best_rank_player = 0;
     
+    // doesn't deal with ties yet
     for(size_t i = 0; i < NUM_PLAYERS; i++)
     {
-        if(rank_finished_hand(i) > best_rank)
+        if(rank_finished_hand(i) >= best_rank)
         {
+            if(numeric_rank_finished_hand(i) < best_numeric_rank)
+                continue;
+            
             best_rank = rank_finished_hand(i);
+            best_numeric_rank = numeric_rank_finished_hand(i);
             best_rank_player = i;
         }
     }
@@ -616,8 +622,6 @@ size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
             return 0;
         }
     }
-    
-    // use 13 offset encoding to break ties
     
     size_t ret = 0;
     

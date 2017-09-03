@@ -102,8 +102,8 @@ public:
     void play_rand(void);
     void play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet);
     
-    size_t get_rand_uncovered_index(const size_t player_index);
-    size_t get_best_rank(void);
+    size_t get_rand_uncovered_index(const size_t player_index) const;
+    size_t get_best_rank(void) const;
     size_t rank_finished_hand(const size_t player_index) const;
     size_t numeric_rank_finished_hand(const size_t player_index) const;
     
