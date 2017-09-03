@@ -92,6 +92,7 @@ int main(void)
         // Determine the winner
         size_t index = bpt.get_best_rank();
 
+        /*
         for(size_t i = 0; i < NUM_PLAYERS; i++)
         {
             cout << "player " << i + 1 << ": ";
@@ -99,7 +100,7 @@ int main(void)
             bpt.print_finished_rank(i);
             cout << endl;
         }
-        
+        */
         
         
         error_rate = 0;
