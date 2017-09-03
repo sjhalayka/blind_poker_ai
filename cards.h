@@ -102,6 +102,7 @@ public:
     size_t get_rand_uncovered_index(const size_t player_index);
     size_t get_best_rank(void);
     size_t rank_finished_hand(const size_t player_index) const;
+    size_t numeric_rank_finished_hand(const size_t player_index) const;
     
     bool is_finished_hand_royal_flush(const size_t player_index) const;
     bool is_finished_hand_straight_flush(const size_t player_index) const;
