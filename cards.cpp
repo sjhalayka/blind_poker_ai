@@ -585,6 +585,7 @@ size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index)
     return uncovered_positions[rand() % uncovered_positions.size()];
 }
 
+// need to handle †ies
 size_t blind_poker_table::get_best_rank(void)
 {
     size_t best_rank = 0;
@@ -707,14 +708,56 @@ bool blind_poker_table::is_finished_hand_straight_flush(const size_t player_inde
 
 bool blind_poker_table::is_finished_hand_4_of_a_kind(const size_t player_index) const
 {
+    if(player_index >= NUM_PLAYERS)
+        return 0;
     
-    return false;
+    vector<card> temp_hand = players_hands[player_index];
+    sort(temp_hand.begin(), temp_hand.end());
+    
+    map<size_t, size_t> unique_faces;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        unique_faces[temp_hand[i].face]++;
+    
+    bool found_four = false;
+    
+    for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
+    {
+        if(4 == ci->second)
+            found_four = true;
+    }
+        
+    return found_four;
 }
 
 bool blind_poker_table::is_finished_hand_full_house(const size_t player_index) const
 {
-    return false;
+    if(player_index >= NUM_PLAYERS)
+        return 0;
     
+    vector<card> temp_hand = players_hands[player_index];
+    sort(temp_hand.begin(), temp_hand.end());
+    
+    map<size_t, size_t> unique_faces;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        unique_faces[temp_hand[i].face]++;
+    
+    bool found_two = false;
+    bool found_three = false;
+    
+    for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
+    {
+        if(3 == ci->second)
+            found_three = true;
+        else if(2 == ci->second)
+            found_two = true;
+    }
+    
+    if(true == found_three && true == found_two)
+        return true;
+    
+    return false;
 }
 
 bool blind_poker_table::is_finished_hand_flush(const size_t player_index) const
@@ -727,7 +770,7 @@ bool blind_poker_table::is_finished_hand_flush(const size_t player_index) const
 
     size_t suit = temp_hand[0].suit;
     
-    for(size_t i = 1; i < NUM_CARDS_PER_HAND)
+    for(size_t i = 1; i < NUM_CARDS_PER_HAND; i++)
         if(temp_hand[i].suit != suit)
             return false;
     
@@ -749,8 +792,8 @@ bool blind_poker_table::is_finished_hand_straight(const size_t player_index) con
        FACE_2 == temp_hand[0].face)
         return true;
     
-    if(size_t i = 1; i < NUM_CARDS_PER_HAND; i++)
-        if(temp_hand[i] != temp_hand[i - 1].face + 1)
+    for(size_t i = 1; i < NUM_CARDS_PER_HAND; i++)
+        if(temp_hand[i].face != temp_hand[i - 1].face + 1)
             return false;
     
     return true;
@@ -758,20 +801,80 @@ bool blind_poker_table::is_finished_hand_straight(const size_t player_index) con
 
 bool blind_poker_table::is_finished_hand_3_of_a_kind(const size_t player_index) const
 {
-        return false;
+    if(player_index >= NUM_PLAYERS)
+        return 0;
     
+    vector<card> temp_hand = players_hands[player_index];
+    sort(temp_hand.begin(), temp_hand.end());
+    
+    map<size_t, size_t> unique_faces;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        unique_faces[temp_hand[i].face]++;
+    
+    bool found_three = false;
+    
+    for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
+    {
+        if(3 == ci->second)
+            found_three = true;
+    }
+    
+    return found_three;
 }
 
 bool blind_poker_table::is_finished_hand_2_pair(const size_t player_index) const
 {
-        return false;
+    if(player_index >= NUM_PLAYERS)
+        return 0;
     
+    vector<card> temp_hand = players_hands[player_index];
+    sort(temp_hand.begin(), temp_hand.end());
+    
+    map<size_t, size_t> unique_faces;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        unique_faces[temp_hand[i].face]++;
+    
+    size_t num_pair_found = 0;
+    
+    for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
+    {
+        if(2 == ci->second)
+            num_pair_found++;
+    }
+    
+    if(2 == num_pair_found)
+        return true;
+    
+    return false;
 }
 
 bool blind_poker_table::is_finished_hand_1_pair(const size_t player_index) const
 {
-        return false;
+    if(player_index >= NUM_PLAYERS)
+        return 0;
     
+    vector<card> temp_hand = players_hands[player_index];
+    sort(temp_hand.begin(), temp_hand.end());
+    
+    map<size_t, size_t> unique_faces;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        unique_faces[temp_hand[i].face]++;
+    
+    size_t num_pair_found = 0;
+    
+    for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
+    {
+        if(2 == ci->second)
+            num_pair_found++;
+    }
+    
+    if(1 == num_pair_found)
+        return true;
+    
+    return false;
 }
 
 bool blind_poker_table::is_finished_hand_high_card(const size_t player_index) const

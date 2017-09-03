@@ -5,6 +5,9 @@
 #include <vector>
 using std::vector;
 
+#include <map>
+using std::map;
+
 #include <iostream>
 using std::cout;
 using std::endl;
