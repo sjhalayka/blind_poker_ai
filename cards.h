@@ -97,6 +97,7 @@ public:
     blind_poker_table(void);
     void reset_table(void);
     void print_table(void);
+    void print_sorted_hand(const size_t player_index) const;
     void get_card_states(vector<double> &states);
     
     void play_rand(void);
@@ -106,6 +107,30 @@ public:
     size_t get_best_rank(void) const;
     size_t rank_finished_hand(const size_t player_index) const;
     size_t numeric_rank_finished_hand(const size_t player_index) const;
+    
+    void print_finished_rank(const size_t player_index) const
+    {
+        if(is_finished_hand_royal_flush(player_index))
+            cout << "Royal Flush";
+        else if(is_finished_hand_straight_flush(player_index))
+            cout << "Straight Flush";
+        else if(is_finished_hand_4_of_a_kind(player_index))
+            cout << "Four of a kind";
+        else if(is_finished_hand_full_house(player_index))
+            cout << "Full House";
+        else if(is_finished_hand_flush(player_index))
+            cout << "Flush";
+        else if(is_finished_hand_straight(player_index))
+            cout << "Straight";
+        else if(is_finished_hand_3_of_a_kind(player_index))
+            cout << "Three of a kind";
+        else if(is_finished_hand_2_pair(player_index))
+            cout << "Two pair";
+        else if(is_finished_hand_1_pair(player_index))
+            cout << "One pair";
+        else if(is_finished_hand_high_card(player_index))
+            cout << "High card";
+    }
     
     bool is_finished_hand_royal_flush(const size_t player_index) const;
     bool is_finished_hand_straight_flush(const size_t player_index) const;

@@ -22,7 +22,7 @@ int main(void)
     double max_error_rate = 0.00001;
     double error_rate = 0;
     
-    size_t max_training_sessions = 10000;
+    size_t max_training_sessions = 100000;
 	size_t num_training_sessions = 0;
     
     vector<FFBPNeuralNet> NNets;
@@ -92,6 +92,16 @@ int main(void)
         // Determine the winner
         size_t index = bpt.get_best_rank();
 
+        for(size_t i = 0; i < NUM_PLAYERS; i++)
+        {
+            cout << "player " << i + 1 << ": ";
+            bpt.print_sorted_hand(i);
+            bpt.print_finished_rank(i);
+            cout << endl;
+        }
+        
+        
+        
         error_rate = 0;
 
         // for each ANN
@@ -120,7 +130,7 @@ int main(void)
             if(0 != nnet_io[i - 1].size())
                 error_rate /= nnet_io[i - 1].size();
             
-            cout << "Error rate = " << error_rate << endl;
+           //  cout << "Error rate = " << error_rate << endl;
         }
                     
         num_training_sessions++;

@@ -135,6 +135,22 @@ void blind_poker_table::print_table(void)
     cout << endl << endl;
 }
 
+void blind_poker_table::print_sorted_hand(const size_t player_index) const
+{
+    if(player_index >= NUM_PLAYERS)
+        return;
+    
+    vector<card> temp_hand = players_hands[player_index];
+    sort(temp_hand.begin(), temp_hand.end());
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        temp_hand[i].print();
+        cout << ' ';
+    }
+
+}
+
 void blind_poker_table::get_card_states(vector<double> &states)
 {
     states.clear();
@@ -585,7 +601,6 @@ size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index) co
     return uncovered_positions[rand() % uncovered_positions.size()];
 }
 
-// need to handle †ies
 size_t blind_poker_table::get_best_rank(void) const
 {
     size_t best_rank = 0;
