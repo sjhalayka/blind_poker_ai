@@ -612,8 +612,11 @@ size_t blind_poker_table::get_best_rank(void) const
     {
         if(rank_finished_hand(i) >= best_rank)
         {
-            if(numeric_rank_finished_hand(i) < best_numeric_rank)
-                continue;
+            if(rank_finished_hand(i) == best_rank)
+            {
+                if(numeric_rank_finished_hand(i) <= best_numeric_rank)
+                    continue;
+            }
             
             best_rank = rank_finished_hand(i);
             best_numeric_rank = numeric_rank_finished_hand(i);
@@ -664,6 +667,7 @@ size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
     return ret;
 }
 
+// when sorting, make sure A is in positiion 0 when it's a 2345 straight
 size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) const
 {
     if(player_index >= NUM_PLAYERS)
@@ -673,7 +677,164 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
         
     vector<card> temp_hand = players_hands[player_index];
     sort(temp_hand.begin(), temp_hand.end());
+    
+    if(is_finished_hand_royal_flush(player_index))
+    {
+    //    sort(temp_hand.begin(), temp_hand.end());
+    }
+    else if(is_finished_hand_straight_flush(player_index))
+    {
+      //  sort(temp_hand.begin(), temp_hand.end());
+    }
+    else if(is_finished_hand_4_of_a_kind(player_index))
+    {
+        vector<card> temp_hand2;
         
+        map<size_t, size_t> unique_faces;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+            unique_faces[temp_hand[i].face]++;
+       
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+
+            if(ci->second == 1)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 4)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        temp_hand = temp_hand2;
+    }
+    
+    else if(is_finished_hand_full_house(player_index))
+    {
+        vector<card> temp_hand2;
+        
+        map<size_t, size_t> unique_faces;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+            unique_faces[temp_hand[i].face]++;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 2)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 3)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        temp_hand = temp_hand2;
+    }
+    else if(is_finished_hand_flush(player_index))
+    {
+        //sort(temp_hand.begin(), temp_hand.end());
+    }
+    else if(is_finished_hand_straight(player_index))
+    {
+        //sort(temp_hand.begin(), temp_hand.end());
+    }
+    else if(is_finished_hand_3_of_a_kind(player_index))
+    {
+        vector<card> temp_hand2;
+        
+        map<size_t, size_t> unique_faces;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+            unique_faces[temp_hand[i].face]++;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 1)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 3)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        temp_hand = temp_hand2;
+    }
+    else if(is_finished_hand_2_pair(player_index))
+    {
+        vector<card> temp_hand2;
+        
+        map<size_t, size_t> unique_faces;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+            unique_faces[temp_hand[i].face]++;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 1)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 2)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        temp_hand = temp_hand2;
+    }
+    else if(is_finished_hand_1_pair(player_index))
+    {
+        vector<card> temp_hand2;
+        
+        map<size_t, size_t> unique_faces;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+            unique_faces[temp_hand[i].face]++;
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 1)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        {
+            map<size_t, size_t>::const_iterator ci = unique_faces.find(temp_hand[i].face);
+            
+            if(ci->second == 2)
+                temp_hand2.push_back(temp_hand[i]);
+        }
+        
+        temp_hand = temp_hand2;
+    }
+    else if(is_finished_hand_high_card(player_index))
+    {
+        //sort(temp_hand.begin(), temp_hand.end());
+    }
+    
     // Note: FACE_A is defined to be 12
     size_t offset = FACE_A + 1;
         

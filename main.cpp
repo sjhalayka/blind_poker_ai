@@ -92,15 +92,17 @@ int main(void)
         // Determine the winner
         size_t index = bpt.get_best_rank();
 
-        /*
+        cout << "winner : " << index + 1 << endl;
+        
         for(size_t i = 0; i < NUM_PLAYERS; i++)
         {
             cout << "player " << i + 1 << ": ";
             bpt.print_sorted_hand(i);
             bpt.print_finished_rank(i);
+            cout << " " << bpt.numeric_rank_finished_hand(i);
             cout << endl;
         }
-        */
+        
         
         
         error_rate = 0;
