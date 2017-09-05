@@ -506,6 +506,59 @@ void blind_poker_table::play_rand(void)
         current_player++;
 }
 
+void blind_poker_table::play_hardcoded_AI(void)
+{
+    // make binary choice
+    size_t choice0 = rand()%2;
+    
+    if(0 == choice0) // take top of discard pile
+    {
+        // get rand uncovered index
+        // flip card in player's hand
+        // swap discard pile card with hand card
+        
+        size_t rand_index = get_rand_uncovered_index(current_player);
+        players_hands[current_player][rand_index].uncovered = true;
+        swap_cards(players_hands[current_player][rand_index], discard_pile[discard_pile.size() - 1]);
+    }
+    else // flip top of pickup pile
+    {
+        pickup_pile[pickup_pile.size() - 1].uncovered = true;
+        
+        size_t choice1 = rand()%2;
+        
+        if(0 == choice1) // discard
+        {
+            // move top of pickup pile onto top of discard pile
+            // get rand uncovered index, flip card
+            
+            discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
+            pickup_pile.pop_back();
+            
+            size_t rand_index = get_rand_uncovered_index(current_player);
+            players_hands[current_player][rand_index].uncovered = true;
+        }
+        else
+        {
+            // get rand uncovered index
+            // move hand card to top of discard pile
+            // move pickup pile top card to hand card
+            
+            size_t rand_index = get_rand_uncovered_index(current_player);
+            players_hands[current_player][rand_index].uncovered = true;
+            
+            discard_pile.push_back(players_hands[current_player][rand_index]);
+            players_hands[current_player][rand_index] = pickup_pile[pickup_pile.size() - 1];
+            pickup_pile.pop_back();
+        }
+    }
+    
+    if(current_player == NUM_PLAYERS - 1)
+        current_player = 0;
+    else
+        current_player++;
+}
+
 void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet)
 {
     vector<double> input, output;
@@ -865,6 +918,32 @@ void blind_poker_table::swap_cards(card &a, card &b)
     a = b;
     b = temp_card;
 }
+
+void blind_poker_table::print_finished_rank(const size_t player_index) const
+{
+    if(is_finished_hand_royal_flush(player_index))
+        cout << "Royal Flush";
+    else if(is_finished_hand_straight_flush(player_index))
+        cout << "Straight Flush";
+    else if(is_finished_hand_4_of_a_kind(player_index))
+        cout << "Four of a kind";
+    else if(is_finished_hand_full_house(player_index))
+        cout << "Full House";
+    else if(is_finished_hand_flush(player_index))
+        cout << "Flush";
+    else if(is_finished_hand_straight(player_index))
+        cout << "Straight";
+    else if(is_finished_hand_3_of_a_kind(player_index))
+        cout << "Three of a kind";
+    else if(is_finished_hand_2_pair(player_index))
+        cout << "Two pair";
+    else if(is_finished_hand_1_pair(player_index))
+        cout << "One pair";
+    else if(is_finished_hand_high_card(player_index))
+        cout << "High card";
+}
+
+
 
 bool blind_poker_table::is_finished_hand_royal_flush(const size_t player_index) const
 {
