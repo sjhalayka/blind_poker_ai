@@ -667,7 +667,6 @@ size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
     return ret;
 }
 
-// when sorting, make sure A is in positiion 0 when it's a 2345 straight
 size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) const
 {
     if(player_index >= NUM_PLAYERS)
@@ -834,6 +833,19 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
     {
         //sort(temp_hand.begin(), temp_hand.end());
     }
+    
+    
+    // if straight or straight flush, make sure aces low
+    if(FACE_A == temp_hand[4].face &&
+       FACE_5 == temp_hand[3].face &&
+       FACE_4 == temp_hand[2].face &&
+       FACE_3 == temp_hand[1].face &&
+       FACE_2 == temp_hand[0].face)
+    {
+        temp_hand.insert(temp_hand.begin(), temp_hand[4]);
+        temp_hand.pop_back();
+    }
+    
     
     // Note: FACE_A is defined to be 12
     size_t offset = FACE_A + 1;
