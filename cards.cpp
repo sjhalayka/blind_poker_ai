@@ -506,58 +506,7 @@ void blind_poker_table::play_rand(void)
         current_player++;
 }
 
-void blind_poker_table::play_hardcoded_AI(void)
-{
-    // make binary choice
-    size_t choice0 = rand()%2;
-    
-    if(0 == choice0) // take top of discard pile
-    {
-        // get rand uncovered index
-        // flip card in player's hand
-        // swap discard pile card with hand card
-        
-        size_t rand_index = get_rand_uncovered_index(current_player);
-        players_hands[current_player][rand_index].uncovered = true;
-        swap_cards(players_hands[current_player][rand_index], discard_pile[discard_pile.size() - 1]);
-    }
-    else // flip top of pickup pile
-    {
-        pickup_pile[pickup_pile.size() - 1].uncovered = true;
-        
-        size_t choice1 = rand()%2;
-        
-        if(0 == choice1) // discard
-        {
-            // move top of pickup pile onto top of discard pile
-            // get rand uncovered index, flip card
-            
-            discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
-            pickup_pile.pop_back();
-            
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
-        }
-        else
-        {
-            // get rand uncovered index
-            // move hand card to top of discard pile
-            // move pickup pile top card to hand card
-            
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
-            
-            discard_pile.push_back(players_hands[current_player][rand_index]);
-            players_hands[current_player][rand_index] = pickup_pile[pickup_pile.size() - 1];
-            pickup_pile.pop_back();
-        }
-    }
-    
-    if(current_player == NUM_PLAYERS - 1)
-        current_player = 0;
-    else
-        current_player++;
-}
+
 
 void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet)
 {
@@ -654,7 +603,7 @@ size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index) co
     return uncovered_positions[rand() % uncovered_positions.size()];
 }
 
-size_t blind_poker_table::get_best_rank(void) const
+size_t blind_poker_table::get_best_rank_finished(void) const
 {
     size_t best_rank = 0;
     size_t best_numeric_rank = 0;

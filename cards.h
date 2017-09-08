@@ -101,11 +101,66 @@ public:
     void get_card_states(vector<double> &states);
     
     void play_rand(void);
-    void play_hardcoded_AI(void);
+
+    void play_hardcoded_AI(void)
+    {
+        // make binary choice
+        size_t choice0 = rand()%2;
+        
+        if(0 == choice0) // take top of discard pile
+        {
+            // get rand uncovered index
+            // flip card in player's hand
+            // swap discard pile card with hand card
+            
+            size_t rand_index = get_rand_uncovered_index(current_player);
+            players_hands[current_player][rand_index].uncovered = true;
+            swap_cards(players_hands[current_player][rand_index], discard_pile[discard_pile.size() - 1]);
+        }
+        else // flip top of pickup pile
+        {
+            pickup_pile[pickup_pile.size() - 1].uncovered = true;
+            
+            size_t choice1 = rand()%2;
+            
+            if(0 == choice1) // discard
+            {
+                // move top of pickup pile onto top of discard pile
+                // get rand uncovered index, flip card
+                
+                discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
+                pickup_pile.pop_back();
+                
+                size_t rand_index = get_rand_uncovered_index(current_player);
+                players_hands[current_player][rand_index].uncovered = true;
+            }
+            else
+            {
+                // get rand uncovered index
+                // move hand card to top of discard pile
+                // move pickup pile top card to hand card
+                
+                size_t rand_index = get_rand_uncovered_index(current_player);
+                players_hands[current_player][rand_index].uncovered = true;
+                
+                discard_pile.push_back(players_hands[current_player][rand_index]);
+                players_hands[current_player][rand_index] = pickup_pile[pickup_pile.size() - 1];
+                pickup_pile.pop_back();
+            }
+        }
+        
+        if(current_player == NUM_PLAYERS - 1)
+            current_player = 0;
+        else
+            current_player++;
+    }
+    
+    
     void play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet);
     
     size_t get_rand_uncovered_index(const size_t player_index) const;
-    size_t get_best_rank(void) const;
+    
+    size_t get_best_rank_finished(void) const;
     size_t rank_finished_hand(const size_t player_index) const;
     size_t numeric_rank_finished_hand(const size_t player_index) const;
     
@@ -121,10 +176,7 @@ public:
     bool is_finished_hand_2_pair(const size_t player_index) const;
     bool is_finished_hand_1_pair(const size_t player_index) const;
     bool is_finished_hand_high_card(const size_t player_index) const;
-    
-    
-    
-    
+
     void swap_cards(card &a, card &b);
     
     size_t current_player;

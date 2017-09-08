@@ -90,7 +90,7 @@ int main(void)
         }
 
         // Determine the winner
-        size_t index = bpt.get_best_rank();
+        size_t index = bpt.get_best_rank_finished();
 
         cout << "winner : " << index + 1 << endl;
         
