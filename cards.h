@@ -109,7 +109,7 @@ public:
         
         if(0 == choice0) // take top of discard pile
         {
-            // get rand uncovered index
+            // get rand not shown index
             // flip card in player's hand
             // swap discard pile card with hand card
             
@@ -126,7 +126,7 @@ public:
             if(0 == choice1) // discard
             {
                 // move top of pickup pile onto top of discard pile
-                // get rand uncovered index, flip card
+                // get rand not shown index, flip card
                 
                 discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
                 pickup_pile.pop_back();
@@ -136,7 +136,7 @@ public:
             }
             else
             {
-                // get rand uncovered index
+                // get rand not shown index
                 // move hand card to top of discard pile
                 // move pickup pile top card to hand card
                 
