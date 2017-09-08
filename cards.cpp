@@ -60,7 +60,7 @@ void blind_poker_table::reset_table(void)
             c.card_id = id++;
             c.suit = j;
             c.face = i;
-            c.uncovered = false;
+            c.shown = false;
             
             pickup_pile.push_back(c);
         }
@@ -91,7 +91,7 @@ void blind_poker_table::reset_table(void)
     
     // flip a card off of the pickup pile onto the discard pile
     discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
-    discard_pile[0].uncovered = true;
+    discard_pile[0].shown = true;
     pickup_pile.pop_back();
 }
 
@@ -106,7 +106,7 @@ void blind_poker_table::print_table(void)
         {
             players_hands[i][j].print();
             
-            if(false == players_hands[i][j].uncovered)
+            if(false == players_hands[i][j].shown)
                 cout << "* ";
             else
                 cout << ' ';
@@ -129,7 +129,7 @@ void blind_poker_table::print_table(void)
     
     pickup_pile[pickup_pile.size() - 1].print();
     
-    if(false == pickup_pile[pickup_pile.size() - 1].uncovered)
+    if(false == pickup_pile[pickup_pile.size() - 1].shown)
         cout << '*';
     
     cout << endl << endl;
@@ -174,15 +174,15 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 
                 if(card_id == players_hands[i][j].card_id)
                 {
-                    if(true == players_hands[i][j].uncovered)
+                    if(true == players_hands[i][j].shown)
                     {
                         //cout << "POSITION_HAND0 + " << i << endl;
                         position = POSITION_HAND0 + i;
                     }
                     else
                     {
-                        //cout << "POSITION_UNCOVERED" << endl;
-                        position = POSITION_UNCOVERED;
+                        //cout << "POSITION_NOT_SHOWN" << endl;
+                        position = POSITION_NOT_SHOWN;
                     }
                     
                     found_card = true;
@@ -213,19 +213,19 @@ void blind_poker_table::get_card_states(vector<double> &states)
         }
         
         
-        // check top of pickup pile, if it's uncovered that is
-        if(false == found_card && true == pickup_pile[pickup_pile.size() - 1].uncovered && card_id == pickup_pile[pickup_pile.size() - 1].card_id)
+        // check top of pickup pile, if it's shown that is
+        if(false == found_card && true == pickup_pile[pickup_pile.size() - 1].shown && card_id == pickup_pile[pickup_pile.size() - 1].card_id)
         {
             //cout << "POSITION_TOP_OF_PICKUP_PILE" << endl;
             position = POSITION_TOP_OF_PICKUP_PILE;
             found_card = true;
         }
         
-        // if not found by now, it's uncovered in the pickup pile
+        // if not found by now, it's not shown in the pickup pile
         if(false == found_card)
         {
-            //cout << "POSITION_UNCOVERED 2" << endl;
-            position = POSITION_UNCOVERED;
+            //cout << "POSITION_NOT_SHOWN 2" << endl;
+            position = POSITION_NOT_SHOWN;
         }
         
         switch(position)
@@ -347,7 +347,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 states.push_back(0);
                 break;
             }
-            case POSITION_UNCOVERED:
+            case POSITION_NOT_SHOWN:
             {
                 // 8
                 states.push_back(0);
@@ -437,7 +437,7 @@ void blind_poker_table::get_card_states(vector<double> &states)
                 states.push_back(1);
                 break;
             }
-            case POSITION_UNCOVERED:
+            case POSITION_NOT_SHOWN:
             {
                 // 8
                 states.push_back(1);
@@ -460,39 +460,39 @@ void blind_poker_table::play_rand(void)
     
     if(0 == choice0) // take top of discard pile
     {
-        // get rand uncovered index
+        // get rand not shown index
         // flip card in player's hand
         // swap discard pile card with hand card
         
-        size_t rand_index = get_rand_uncovered_index(current_player);
-        players_hands[current_player][rand_index].uncovered = true;
+        size_t rand_index = get_rand_not_shown_index(current_player);
+        players_hands[current_player][rand_index].shown = true;
         swap_cards(players_hands[current_player][rand_index], discard_pile[discard_pile.size() - 1]);
     }
     else // flip top of pickup pile
     {
-        pickup_pile[pickup_pile.size() - 1].uncovered = true;
+        pickup_pile[pickup_pile.size() - 1].shown = true;
         
         size_t choice1 = rand()%2;
         
         if(0 == choice1) // discard
         {
             // move top of pickup pile onto top of discard pile
-            // get rand uncovered index, flip card
+            // get rand shown index, flip card
             
             discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
             pickup_pile.pop_back();
             
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
+            size_t rand_index = get_rand_not_shown_index(current_player);
+            players_hands[current_player][rand_index].shown = true;
         }
         else
         {
-            // get rand uncovered index
+            // get rand shown index
             // move hand card to top of discard pile
             // move pickup pile top card to hand card
             
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
+            size_t rand_index = get_rand_not_shown_index(current_player);
+            players_hands[current_player][rand_index].shown = true;
             
             discard_pile.push_back(players_hands[current_player][rand_index]);
             players_hands[current_player][rand_index] = pickup_pile[pickup_pile.size() - 1];
@@ -523,11 +523,11 @@ void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &N
         iop.output = output;
         io.push_back(iop);
         
-        // get rand uncovered index
+        // get rand shown index
         // flip card in player's hand
         // swap discard pile card with hand card
-        size_t rand_index = get_rand_uncovered_index(current_player);
-        players_hands[current_player][rand_index].uncovered = true;
+        size_t rand_index = get_rand_not_shown_index(current_player);
+        players_hands[current_player][rand_index].shown = true;
         swap_cards(players_hands[current_player][rand_index], discard_pile[discard_pile.size() - 1]);
     }
     else  // flip top of pickup pile
@@ -537,9 +537,9 @@ void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &N
         iop.output = output;
         io.push_back(iop);
         
-        pickup_pile[pickup_pile.size() - 1].uncovered = true;
+        pickup_pile[pickup_pile.size() - 1].shown = true;
         
-        // the state of the top of the pickup pile has changed to uncovered
+        // the state of the top of the pickup pile has changed to shown
         get_card_states(input);
         NNet.FeedForward(input);
         NNet.GetOutputValues(output);
@@ -552,13 +552,13 @@ void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &N
             io.push_back(iop);
             
             // move top of pickup pile onto top of discard pile
-            // get rand uncovered index, flip card
+            // get rand shown index, flip card
             
             discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
             pickup_pile.pop_back();
             
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
+            size_t rand_index = get_rand_not_shown_index(current_player);
+            players_hands[current_player][rand_index].shown = true;
         }
         else
         {
@@ -567,12 +567,12 @@ void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &N
             iop.output = output;
             io.push_back(iop);
             
-            // get rand uncovered index
+            // get rand shown index
             // move hand card to top of discard pile
             // move pickup pile top card to hand card
             
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
+            size_t rand_index = get_rand_not_shown_index(current_player);
+            players_hands[current_player][rand_index].shown = true;
             
             discard_pile.push_back(players_hands[current_player][rand_index]);
             players_hands[current_player][rand_index] = pickup_pile[pickup_pile.size() - 1];
@@ -586,21 +586,21 @@ void blind_poker_table::play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &N
         current_player++;
 }
 
-size_t blind_poker_table::get_rand_uncovered_index(const size_t player_index) const
+size_t blind_poker_table::get_rand_not_shown_index(const size_t player_index) const
 {
     if(player_index >= NUM_PLAYERS)
         return 0;
     
-    vector<size_t> uncovered_positions;
+    vector<size_t> not_shown_positions;
     
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-        if(false == players_hands[player_index][i].uncovered)
-            uncovered_positions.push_back(i);
+        if(false == players_hands[player_index][i].shown)
+            not_shown_positions.push_back(i);
     
-    if(0 == uncovered_positions.size())
+    if(0 == not_shown_positions.size())
         return 0;
     
-    return uncovered_positions[rand() % uncovered_positions.size()];
+    return not_shown_positions[rand() % not_shown_positions.size()];
 }
 
 size_t blind_poker_table::get_best_rank_finished(void) const
@@ -636,7 +636,7 @@ size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
  
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
     {
-        if(false == players_hands[player_index][i].uncovered)
+        if(false == players_hands[player_index][i].shown)
         {
             cout << "Tried to rank unfinished hand!" << endl;
             return 0;

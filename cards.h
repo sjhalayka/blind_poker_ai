@@ -53,7 +53,7 @@ using std::shuffle;
 #define POSITION_DISCARD_PILE 5
 #define POSITION_TOP_OF_DISCARD_PILE 6
 #define POSITION_TOP_OF_PICKUP_PILE 7
-#define POSITION_UNCOVERED 8
+#define POSITION_NOT_SHOWN 8
 
 
 #define HIGH_CARD 0
@@ -79,7 +79,7 @@ public:
     size_t card_id;
     size_t suit;
     size_t face;
-    bool uncovered;
+    bool shown;
 };
 
 class input_output_pair
@@ -113,13 +113,13 @@ public:
             // flip card in player's hand
             // swap discard pile card with hand card
             
-            size_t rand_index = get_rand_uncovered_index(current_player);
-            players_hands[current_player][rand_index].uncovered = true;
+            size_t rand_index = get_rand_not_shown_index(current_player);
+            players_hands[current_player][rand_index].shown = true;
             swap_cards(players_hands[current_player][rand_index], discard_pile[discard_pile.size() - 1]);
         }
         else // flip top of pickup pile
         {
-            pickup_pile[pickup_pile.size() - 1].uncovered = true;
+            pickup_pile[pickup_pile.size() - 1].shown = true;
             
             size_t choice1 = rand()%2;
             
@@ -131,8 +131,8 @@ public:
                 discard_pile.push_back(pickup_pile[pickup_pile.size() - 1]);
                 pickup_pile.pop_back();
                 
-                size_t rand_index = get_rand_uncovered_index(current_player);
-                players_hands[current_player][rand_index].uncovered = true;
+                size_t rand_index = get_rand_not_shown_index(current_player);
+                players_hands[current_player][rand_index].shown = true;
             }
             else
             {
@@ -140,8 +140,8 @@ public:
                 // move hand card to top of discard pile
                 // move pickup pile top card to hand card
                 
-                size_t rand_index = get_rand_uncovered_index(current_player);
-                players_hands[current_player][rand_index].uncovered = true;
+                size_t rand_index = get_rand_not_shown_index(current_player);
+                players_hands[current_player][rand_index].shown = true;
                 
                 discard_pile.push_back(players_hands[current_player][rand_index]);
                 players_hands[current_player][rand_index] = pickup_pile[pickup_pile.size() - 1];
@@ -158,7 +158,7 @@ public:
     
     void play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet);
     
-    size_t get_rand_uncovered_index(const size_t player_index) const;
+    size_t get_rand_not_shown_index(const size_t player_index) const;
     
     size_t get_best_rank_finished(void) const;
     size_t rank_finished_hand(const size_t player_index) const;
