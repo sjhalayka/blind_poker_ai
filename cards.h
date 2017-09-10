@@ -162,7 +162,6 @@ public:
     size_t get_best_rank_finished(void) const;
     size_t rank_finished_hand(const size_t player_index) const;
     size_t numeric_rank_finished_hand(const size_t player_index) const;
-    
     void print_finished_rank(const size_t player_index) const;
     
     bool is_finished_hand_royal_flush(const size_t player_index) const;
@@ -193,53 +192,7 @@ public:
     bool is_possible_1_pair(const vector<card> &hand) const;
     bool is_possible_high_card(const vector<card> &hand) const;
     
-    size_t get_best_possible_rank(const vector<card> &hand) const
-    {
-        size_t ret = 0;
-        
-        if(is_possible_royal_flush(hand))
-        {
-            ret = ROYAL_FLUSH;
-        }
-        else if(is_possible_straight_flush(hand))
-        {
-            ret = STRAIGHT_FLUSH;
-        }
-        else if(is_possible_4_of_a_kind(hand))
-        {
-            ret = FOUR_OF_A_KIND;
-        }
-        else if(is_possible_full_house(hand))
-        {
-            ret = FULL_HOUSE;
-        }
-        else if(is_possible_flush(hand))
-        {
-            ret = FLUSH;
-        }
-        else if(is_possible_straight(hand))
-        {
-            ret = STRAIGHT;
-        }
-        else if(is_possible_3_of_a_kind(hand))
-        {
-            ret = THREE_OF_A_KIND;
-        }
-        else if(is_possible_2_pair(hand))
-        {
-            ret = TWO_PAIR;
-        }
-        else if(is_possible_1_pair(hand))
-        {
-            ret = ONE_PAIR;
-        }
-        else if(is_possible_high_card(hand))
-        {
-            ret = HIGH_CARD;
-        }
-        
-        return ret;
-    }
+    size_t get_best_possible_rank(const vector<card> &hand) const;
 
     
     
