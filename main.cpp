@@ -79,7 +79,7 @@ int main(void)
         blind_poker_table bpt;
         
         vector< vector<input_output_pair> > nnet_io;
-        nnet_io.resize(NUM_PLAYERS - 1);
+        nnet_io.resize(NUM_PLAYERS - 1); 
         
         for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
         {

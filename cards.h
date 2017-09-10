@@ -101,7 +101,7 @@ public:
     void get_card_states(vector<double> &states);
     
     void play_rand(void);
-
+    
     void play_hardcoded_AI(void)
     {
         // make binary choice
@@ -177,12 +177,17 @@ public:
     bool is_finished_hand_1_pair(const size_t player_index) const;
     bool is_finished_hand_high_card(const size_t player_index) const;
 
+    bool is_card_not_shown(size_t card_id);
+    size_t get_card_id(size_t face, size_t suit);
+    
     void swap_cards(card &a, card &b);
     
     size_t current_player;
     vector< vector < card > > players_hands;
     vector<card> discard_pile;
     vector<card> pickup_pile;
+    
+    vector<card> helper;
 };
 
 

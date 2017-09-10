@@ -47,6 +47,7 @@ void blind_poker_table::reset_table(void)
     players_hands.clear();
     discard_pile.clear();
     pickup_pile.clear();
+    helper.clear();
     
     // initialize the deck
     size_t id = 0;
@@ -65,6 +66,9 @@ void blind_poker_table::reset_table(void)
             pickup_pile.push_back(c);
         }
     }
+    
+    // make a backup of the cards for later use when looking up card_id
+    helper = pickup_pile;
     
     // shuffle the deck
     for(size_t i = 0; i < 100000; i++)
@@ -1101,3 +1105,97 @@ bool blind_poker_table::is_finished_hand_high_card(const size_t player_index) co
 {
     return true;
 }
+
+bool blind_poker_table::is_card_not_shown(size_t card_id)
+{
+    bool found_card = false;
+    size_t position = POSITION_HAND0;
+    
+    // Check players' hands
+    for(size_t i = 0; i < NUM_PLAYERS; i++)
+    {
+        if(true == found_card)
+            break;
+        
+        // Check all cards in hand
+        for(size_t j = 0; j < NUM_CARDS_PER_HAND; j++)
+        {
+            if(true == found_card)
+                break;
+            
+            if(card_id == players_hands[i][j].card_id)
+            {
+                if(true == players_hands[i][j].shown)
+                {
+                    //cout << "POSITION_HAND0 + " << i << endl;
+                    position = POSITION_HAND0 + i;
+                }
+                else
+                {
+                    //cout << "POSITION_NOT_SHOWN" << endl;
+                    position = POSITION_NOT_SHOWN;
+                }
+                
+                found_card = true;
+            }
+        }
+    }
+    
+    // Check top of discard pile
+    if(false == found_card && card_id == discard_pile[discard_pile.size() - 1].card_id)
+    {
+        //cout << "POSITION_TOP_OF_DISCARD_PILE" << endl;
+        position = POSITION_TOP_OF_DISCARD_PILE;
+        found_card = true;
+    }
+    
+    // Check all except for top discard pile
+    for(size_t i = 0; i < discard_pile.size() - 1; i++)
+    {
+        if(true == found_card)
+            break;
+        
+        if(card_id == discard_pile[i].card_id)
+        {
+            //cout << "POSITION_DISCARD_PILE" << endl;
+            position = POSITION_DISCARD_PILE;
+            found_card = true;
+        }
+    }
+    
+    
+    // check top of pickup pile, if it's shown that is
+    if(false == found_card && true == pickup_pile[pickup_pile.size() - 1].shown && card_id == pickup_pile[pickup_pile.size() - 1].card_id)
+    {
+        //cout << "POSITION_TOP_OF_PICKUP_PILE" << endl;
+        position = POSITION_TOP_OF_PICKUP_PILE;
+        found_card = true;
+    }
+    
+    // if not found by now, it's not shown in the pickup pile
+    if(false == found_card)
+    {
+        //cout << "POSITION_NOT_SHOWN 2" << endl;
+        position = POSITION_NOT_SHOWN;
+    }
+    
+    if(POSITION_NOT_SHOWN == position)
+        return true;
+    else
+        return false;
+}
+
+size_t blind_poker_table::get_card_id(size_t face, size_t suit)
+{
+    for(size_t i = 0; i < NUM_CARDS_PER_DECK; i++)
+    {
+        if(helper[i].face == face && helper[i].suit == suit)
+        {
+            return helper[i].card_id;
+        }
+    }
+    
+    return 0;
+}
+
+
