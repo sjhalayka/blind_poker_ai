@@ -55,7 +55,6 @@ using std::shuffle;
 #define POSITION_TOP_OF_PICKUP_PILE 7
 #define POSITION_NOT_SHOWN 8
 
-
 #define HIGH_CARD 0
 #define ONE_PAIR 1
 #define TWO_PAIR 2
@@ -181,6 +180,68 @@ public:
     size_t get_card_id(size_t face, size_t suit);
     
     void swap_cards(card &a, card &b);
+
+    
+    bool is_possible_royal_flush(const vector<card> &hand) const;
+    bool is_possible_straight_flush(const vector<card> &hand) const;
+    bool is_possible_4_of_a_kind(const vector<card> &hand) const;
+    bool is_possible_full_house(const vector<card> &hand) const;
+    bool is_possible_flush(const vector<card> &hand) const;
+    bool is_possible_straight(const vector<card> &hand) const;
+    bool is_possible_3_of_a_kind(const vector<card> &hand) const;
+    bool is_possible_2_pair(const vector<card> &hand) const;
+    bool is_possible_1_pair(const vector<card> &hand) const;
+    bool is_possible_high_card(const vector<card> &hand) const;
+    
+    size_t get_best_possible_rank(const vector<card> &hand) const
+    {
+        size_t ret = 0;
+        
+        if(is_possible_royal_flush(hand))
+        {
+            ret = ROYAL_FLUSH;
+        }
+        else if(is_possible_straight_flush(hand))
+        {
+            ret = STRAIGHT_FLUSH;
+        }
+        else if(is_possible_4_of_a_kind(hand))
+        {
+            ret = FOUR_OF_A_KIND;
+        }
+        else if(is_possible_full_house(hand))
+        {
+            ret = FULL_HOUSE;
+        }
+        else if(is_possible_flush(hand))
+        {
+            ret = FLUSH;
+        }
+        else if(is_possible_straight(hand))
+        {
+            ret = STRAIGHT;
+        }
+        else if(is_possible_3_of_a_kind(hand))
+        {
+            ret = THREE_OF_A_KIND;
+        }
+        else if(is_possible_2_pair(hand))
+        {
+            ret = TWO_PAIR;
+        }
+        else if(is_possible_1_pair(hand))
+        {
+            ret = ONE_PAIR;
+        }
+        else if(is_possible_high_card(hand))
+        {
+            ret = HIGH_CARD;
+        }
+        
+        return ret;
+    }
+
+    
     
     size_t current_player;
     vector< vector < card > > players_hands;

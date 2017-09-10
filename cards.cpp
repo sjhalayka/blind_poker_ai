@@ -1198,4 +1198,57 @@ size_t blind_poker_table::get_card_id(size_t face, size_t suit)
     return 0;
 }
 
+bool blind_poker_table::is_possible_royal_flush(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_straight_flush(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_4_of_a_kind(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_full_house(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_flush(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_straight(const vector<card> &hand) const
+{
+     return false;
+}
+
+bool blind_poker_table::is_possible_3_of_a_kind(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_2_pair(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_1_pair(const vector<card> &hand) const
+{
+    return false;
+}
+
+bool blind_poker_table::is_possible_high_card(const vector<card> &hand) const
+{
+    return true;
+}
+
+
+
+
 
