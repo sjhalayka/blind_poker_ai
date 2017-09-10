@@ -47,7 +47,7 @@ void blind_poker_table::reset_table(void)
     players_hands.clear();
     discard_pile.clear();
     pickup_pile.clear();
-    helper.clear();
+    card_id_lookup_helper.clear();
     
     // initialize the deck
     size_t id = 0;
@@ -68,7 +68,7 @@ void blind_poker_table::reset_table(void)
     }
     
     // make a backup of the cards for later use when looking up card_id
-    helper = pickup_pile;
+    card_id_lookup_helper = pickup_pile;
     
     // shuffle the deck
     for(size_t i = 0; i < 100000; i++)
@@ -1151,9 +1151,9 @@ size_t blind_poker_table::get_card_id(size_t face, size_t suit)
 {
     for(size_t i = 0; i < NUM_CARDS_PER_DECK; i++)
     {
-        if(helper[i].face == face && helper[i].suit == suit)
+        if(card_id_lookup_helper[i].face == face && card_id_lookup_helper[i].suit == suit)
         {
-            return helper[i].card_id;
+            return card_id_lookup_helper[i].card_id;
         }
     }
     

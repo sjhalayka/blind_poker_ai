@@ -201,7 +201,7 @@ public:
     vector<card> discard_pile;
     vector<card> pickup_pile;
     
-    vector<card> helper;
+    vector<card> card_id_lookup_helper;
 };
 
 
