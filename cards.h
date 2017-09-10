@@ -95,9 +95,16 @@ public:
 
     blind_poker_table(void);
     void reset_table(void);
-    void print_table(void);
+    void print_table(void) const;
     void print_sorted_hand(const size_t player_index) const;
-    void get_card_states(vector<double> &states);
+    void get_card_states(vector<double> &states) const;
+    
+    size_t get_best_rank_finished(void) const;
+    void print_finished_rank(const size_t player_index) const;
+    size_t rank_finished_hand(const size_t player_index) const;
+    size_t numeric_rank_finished_hand(const size_t player_index) const;
+    
+    size_t get_best_possible_rank(const vector<card> &hand) const;
     
     void play_rand(void);
     
@@ -157,29 +164,13 @@ public:
     
     void play_ANN(vector<input_output_pair> &io, FFBPNeuralNet &NNet);
     
-    size_t get_rand_not_shown_index(const size_t player_index) const;
-    
-    size_t get_best_rank_finished(void) const;
-    size_t rank_finished_hand(const size_t player_index) const;
-    size_t numeric_rank_finished_hand(const size_t player_index) const;
-    void print_finished_rank(const size_t player_index) const;
-    
-    bool is_finished_hand_royal_flush(const vector<card> &hand) const;
-    bool is_finished_hand_straight_flush(const vector<card> &hand) const;
-    bool is_finished_hand_4_of_a_kind(const vector<card> &hand) const;
-    bool is_finished_hand_full_house(const vector<card> &hand) const;
-    bool is_finished_hand_flush(const vector<card> &hand) const;
-    bool is_finished_hand_straight(const vector<card> &hand) const;
-    bool is_finished_hand_3_of_a_kind(const vector<card> &hand) const;
-    bool is_finished_hand_2_pair(const vector<card> &hand) const;
-    bool is_finished_hand_1_pair(const vector<card> &hand) const;
-    bool is_finished_hand_high_card(const vector<card> &hand) const;
 
-    bool is_card_not_shown(size_t card_id);
-    size_t get_card_id(size_t face, size_t suit);
+protected:
+    
+    bool is_card_not_shown(const size_t card_id) const;
+    size_t get_card_id(const size_t face, const size_t suit) const;
     
     void swap_cards(card &a, card &b);
-
     
     bool is_possible_royal_flush(const vector<card> &hand) const;
     bool is_possible_straight_flush(const vector<card> &hand) const;
@@ -192,9 +183,18 @@ public:
     bool is_possible_1_pair(const vector<card> &hand) const;
     bool is_possible_high_card(const vector<card> &hand) const;
     
-    size_t get_best_possible_rank(const vector<card> &hand) const;
-
+    size_t get_rand_not_shown_index(const size_t player_index) const;
     
+    bool is_finished_hand_royal_flush(const vector<card> &hand) const;
+    bool is_finished_hand_straight_flush(const vector<card> &hand) const;
+    bool is_finished_hand_4_of_a_kind(const vector<card> &hand) const;
+    bool is_finished_hand_full_house(const vector<card> &hand) const;
+    bool is_finished_hand_flush(const vector<card> &hand) const;
+    bool is_finished_hand_straight(const vector<card> &hand) const;
+    bool is_finished_hand_3_of_a_kind(const vector<card> &hand) const;
+    bool is_finished_hand_2_pair(const vector<card> &hand) const;
+    bool is_finished_hand_1_pair(const vector<card> &hand) const;
+    bool is_finished_hand_high_card(const vector<card> &hand) const;
     
     size_t current_player;
     vector< vector < card > > players_hands;
