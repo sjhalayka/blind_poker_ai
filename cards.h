@@ -164,16 +164,16 @@ public:
     size_t numeric_rank_finished_hand(const size_t player_index) const;
     void print_finished_rank(const size_t player_index) const;
     
-    bool is_finished_hand_royal_flush(const size_t player_index) const;
-    bool is_finished_hand_straight_flush(const size_t player_index) const;
-    bool is_finished_hand_4_of_a_kind(const size_t player_index) const;
-    bool is_finished_hand_full_house(const size_t player_index) const;
-    bool is_finished_hand_flush(const size_t player_index) const;
-    bool is_finished_hand_straight(const size_t player_index) const;
-    bool is_finished_hand_3_of_a_kind(const size_t player_index) const;
-    bool is_finished_hand_2_pair(const size_t player_index) const;
-    bool is_finished_hand_1_pair(const size_t player_index) const;
-    bool is_finished_hand_high_card(const size_t player_index) const;
+    bool is_finished_hand_royal_flush(const vector<card> &hand) const;
+    bool is_finished_hand_straight_flush(const vector<card> &hand) const;
+    bool is_finished_hand_4_of_a_kind(const vector<card> &hand) const;
+    bool is_finished_hand_full_house(const vector<card> &hand) const;
+    bool is_finished_hand_flush(const vector<card> &hand) const;
+    bool is_finished_hand_straight(const vector<card> &hand) const;
+    bool is_finished_hand_3_of_a_kind(const vector<card> &hand) const;
+    bool is_finished_hand_2_pair(const vector<card> &hand) const;
+    bool is_finished_hand_1_pair(const vector<card> &hand) const;
+    bool is_finished_hand_high_card(const vector<card> &hand) const;
 
     bool is_card_not_shown(size_t card_id);
     size_t get_card_id(size_t face, size_t suit);

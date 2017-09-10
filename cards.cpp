@@ -635,39 +635,29 @@ size_t blind_poker_table::get_best_rank_finished(void) const
 
 size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
- 
-    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-    {
-        if(false == players_hands[player_index][i].shown)
-        {
-            cout << "Tried to rank unfinished hand!" << endl;
-            return 0;
-        }
-    }
+    vector<card> temp_hand = players_hands[player_index];
     
     size_t ret = 0;
     
-    if(is_finished_hand_royal_flush(player_index))
+    if(is_finished_hand_royal_flush(temp_hand))
         ret = ROYAL_FLUSH;
-    else if(is_finished_hand_straight_flush(player_index))
+    else if(is_finished_hand_straight_flush(temp_hand))
         ret = STRAIGHT_FLUSH;
-    else if(is_finished_hand_4_of_a_kind(player_index))
+    else if(is_finished_hand_4_of_a_kind(temp_hand))
         ret = FOUR_OF_A_KIND;
-    else if(is_finished_hand_full_house(player_index))
+    else if(is_finished_hand_full_house(temp_hand))
         ret = FULL_HOUSE;
-    else if(is_finished_hand_flush(player_index))
+    else if(is_finished_hand_flush(temp_hand))
         ret = FLUSH;
-    else if(is_finished_hand_straight(player_index))
+    else if(is_finished_hand_straight(temp_hand))
         ret = STRAIGHT;
-    else if(is_finished_hand_3_of_a_kind(player_index))
+    else if(is_finished_hand_3_of_a_kind(temp_hand))
         ret = THREE_OF_A_KIND;
-    else if(is_finished_hand_2_pair(player_index))
+    else if(is_finished_hand_2_pair(temp_hand))
         ret = TWO_PAIR;
-    else if(is_finished_hand_1_pair(player_index))
+    else if(is_finished_hand_1_pair(temp_hand))
         ret = ONE_PAIR;
-    else if(is_finished_hand_high_card(player_index))
+    else if(is_finished_hand_high_card(temp_hand))
         ret = HIGH_CARD;
 
     return ret;
@@ -675,23 +665,20 @@ size_t blind_poker_table::rank_finished_hand(const size_t player_index) const
 
 size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-        
     size_t ret = 0;
         
     vector<card> temp_hand = players_hands[player_index];
     sort(temp_hand.begin(), temp_hand.end());
     
-    if(is_finished_hand_royal_flush(player_index))
+    if(is_finished_hand_royal_flush(temp_hand))
     {
     //    sort(temp_hand.begin(), temp_hand.end());
     }
-    else if(is_finished_hand_straight_flush(player_index))
+    else if(is_finished_hand_straight_flush(temp_hand))
     {
       //  sort(temp_hand.begin(), temp_hand.end());
     }
-    else if(is_finished_hand_4_of_a_kind(player_index))
+    else if(is_finished_hand_4_of_a_kind(temp_hand))
     {
         vector<card> temp_hand2;
         
@@ -719,7 +706,7 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
         temp_hand = temp_hand2;
     }
     
-    else if(is_finished_hand_full_house(player_index))
+    else if(is_finished_hand_full_house(temp_hand))
     {
         vector<card> temp_hand2;
         
@@ -746,15 +733,15 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
         
         temp_hand = temp_hand2;
     }
-    else if(is_finished_hand_flush(player_index))
+    else if(is_finished_hand_flush(temp_hand))
     {
         //sort(temp_hand.begin(), temp_hand.end());
     }
-    else if(is_finished_hand_straight(player_index))
+    else if(is_finished_hand_straight(temp_hand))
     {
         //sort(temp_hand.begin(), temp_hand.end());
     }
-    else if(is_finished_hand_3_of_a_kind(player_index))
+    else if(is_finished_hand_3_of_a_kind(temp_hand))
     {
         vector<card> temp_hand2;
         
@@ -781,7 +768,7 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
         
         temp_hand = temp_hand2;
     }
-    else if(is_finished_hand_2_pair(player_index))
+    else if(is_finished_hand_2_pair(temp_hand))
     {
         vector<card> temp_hand2;
         
@@ -808,7 +795,7 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
         
         temp_hand = temp_hand2;
     }
-    else if(is_finished_hand_1_pair(player_index))
+    else if(is_finished_hand_1_pair(temp_hand))
     {
         vector<card> temp_hand2;
         
@@ -835,7 +822,7 @@ size_t blind_poker_table::numeric_rank_finished_hand(const size_t player_index) 
         
         temp_hand = temp_hand2;
     }
-    else if(is_finished_hand_high_card(player_index))
+    else if(is_finished_hand_high_card(temp_hand))
     {
         //sort(temp_hand.begin(), temp_hand.end());
     }
@@ -874,39 +861,38 @@ void blind_poker_table::swap_cards(card &a, card &b)
 
 void blind_poker_table::print_finished_rank(const size_t player_index) const
 {
-    if(is_finished_hand_royal_flush(player_index))
+    vector<card> temp_hand = players_hands[player_index];
+    
+    if(is_finished_hand_royal_flush(temp_hand))
         cout << "Royal Flush";
-    else if(is_finished_hand_straight_flush(player_index))
+    else if(is_finished_hand_straight_flush(temp_hand))
         cout << "Straight Flush";
-    else if(is_finished_hand_4_of_a_kind(player_index))
+    else if(is_finished_hand_4_of_a_kind(temp_hand))
         cout << "Four of a kind";
-    else if(is_finished_hand_full_house(player_index))
+    else if(is_finished_hand_full_house(temp_hand))
         cout << "Full House";
-    else if(is_finished_hand_flush(player_index))
+    else if(is_finished_hand_flush(temp_hand))
         cout << "Flush";
-    else if(is_finished_hand_straight(player_index))
+    else if(is_finished_hand_straight(temp_hand))
         cout << "Straight";
-    else if(is_finished_hand_3_of_a_kind(player_index))
+    else if(is_finished_hand_3_of_a_kind(temp_hand))
         cout << "Three of a kind";
-    else if(is_finished_hand_2_pair(player_index))
+    else if(is_finished_hand_2_pair(temp_hand))
         cout << "Two pair";
-    else if(is_finished_hand_1_pair(player_index))
+    else if(is_finished_hand_1_pair(temp_hand))
         cout << "One pair";
-    else if(is_finished_hand_high_card(player_index))
+    else if(is_finished_hand_high_card(temp_hand))
         cout << "High card";
 }
 
 
 
-bool blind_poker_table::is_finished_hand_royal_flush(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_royal_flush(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
-    if(false == is_finished_hand_flush(player_index))
+    if(false == is_finished_hand_flush(temp_hand))
         return false;
     
     if(FACE_A != temp_hand[4].face ||
@@ -919,23 +905,17 @@ bool blind_poker_table::is_finished_hand_royal_flush(const size_t player_index) 
     return true;
 }
 
-bool blind_poker_table::is_finished_hand_straight_flush(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_straight_flush(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    if(false == is_finished_hand_straight(player_index) || false == is_finished_hand_flush(player_index))
+    if(false == is_finished_hand_straight(hand) || false == is_finished_hand_flush(hand))
         return false;
     
     return true;
 }
 
-bool blind_poker_table::is_finished_hand_4_of_a_kind(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_4_of_a_kind(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
     map<size_t, size_t> unique_faces;
@@ -954,12 +934,9 @@ bool blind_poker_table::is_finished_hand_4_of_a_kind(const size_t player_index) 
     return found_four;
 }
 
-bool blind_poker_table::is_finished_hand_full_house(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_full_house(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
     map<size_t, size_t> unique_faces;
@@ -984,12 +961,9 @@ bool blind_poker_table::is_finished_hand_full_house(const size_t player_index) c
     return false;
 }
 
-bool blind_poker_table::is_finished_hand_flush(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_flush(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
 
     size_t suit = temp_hand[0].suit;
@@ -1001,12 +975,9 @@ bool blind_poker_table::is_finished_hand_flush(const size_t player_index) const
     return true;
 }
 
-bool blind_poker_table::is_finished_hand_straight(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_straight(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
     if(FACE_A == temp_hand[4].face &&
@@ -1023,12 +994,9 @@ bool blind_poker_table::is_finished_hand_straight(const size_t player_index) con
     return true;
 }
 
-bool blind_poker_table::is_finished_hand_3_of_a_kind(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_3_of_a_kind(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
     map<size_t, size_t> unique_faces;
@@ -1047,12 +1015,9 @@ bool blind_poker_table::is_finished_hand_3_of_a_kind(const size_t player_index) 
     return found_three;
 }
 
-bool blind_poker_table::is_finished_hand_2_pair(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_2_pair(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
     map<size_t, size_t> unique_faces;
@@ -1074,12 +1039,9 @@ bool blind_poker_table::is_finished_hand_2_pair(const size_t player_index) const
     return false;
 }
 
-bool blind_poker_table::is_finished_hand_1_pair(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_1_pair(const vector<card> &hand) const
 {
-    if(player_index >= NUM_PLAYERS)
-        return 0;
-    
-    vector<card> temp_hand = players_hands[player_index];
+    vector<card> temp_hand = hand;
     sort(temp_hand.begin(), temp_hand.end());
     
     map<size_t, size_t> unique_faces;
@@ -1101,7 +1063,7 @@ bool blind_poker_table::is_finished_hand_1_pair(const size_t player_index) const
     return false;
 }
 
-bool blind_poker_table::is_finished_hand_high_card(const size_t player_index) const
+bool blind_poker_table::is_finished_hand_high_card(const vector<card> &hand) const
 {
     return true;
 }
