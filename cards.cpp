@@ -1162,9 +1162,48 @@ bool blind_poker_table::is_possible_royal_flush(const vector<card> &hand) const
         if(true == hand[i].shown)
             num_shown++;
     
+    // handle edge cases
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_royal_flush(hand);
     
+    // no suit or face specified, check not shown cards for all four suits for royal flush possibility
+    if(0 == num_shown)
+    {
+        if(is_card_not_shown(get_card_id(FACE_A, SUIT_HEARTS)) &&
+           is_card_not_shown(get_card_id(FACE_K, SUIT_HEARTS)) &&
+           is_card_not_shown(get_card_id(FACE_Q, SUIT_HEARTS)) &&
+           is_card_not_shown(get_card_id(FACE_J, SUIT_HEARTS)) &&
+           is_card_not_shown(get_card_id(FACE_10, SUIT_HEARTS)))
+        {
+            return true;
+        }
+        else if(is_card_not_shown(get_card_id(FACE_A, SUIT_SPADES)) &&
+           is_card_not_shown(get_card_id(FACE_K, SUIT_SPADES)) &&
+           is_card_not_shown(get_card_id(FACE_Q, SUIT_SPADES)) &&
+           is_card_not_shown(get_card_id(FACE_J, SUIT_SPADES)) &&
+           is_card_not_shown(get_card_id(FACE_10, SUIT_SPADES)))
+        {
+            return true;
+        }
+        else if(is_card_not_shown(get_card_id(FACE_A, SUIT_DIAMONDS)) &&
+           is_card_not_shown(get_card_id(FACE_K, SUIT_DIAMONDS)) &&
+           is_card_not_shown(get_card_id(FACE_Q, SUIT_DIAMONDS)) &&
+           is_card_not_shown(get_card_id(FACE_J, SUIT_DIAMONDS)) &&
+           is_card_not_shown(get_card_id(FACE_10, SUIT_DIAMONDS)))
+        {
+            return true;
+        }
+        else if(is_card_not_shown(get_card_id(FACE_A, SUIT_CLUBS)) &&
+           is_card_not_shown(get_card_id(FACE_K, SUIT_CLUBS)) &&
+           is_card_not_shown(get_card_id(FACE_Q, SUIT_CLUBS)) &&
+           is_card_not_shown(get_card_id(FACE_J, SUIT_CLUBS)) &&
+           is_card_not_shown(get_card_id(FACE_10, SUIT_CLUBS)))
+        {
+            return true;
+        }
+    }
+    
+    // handle hands with 1 to 4 not shown (wild) cards
     
     return false;
 }
@@ -1180,6 +1219,12 @@ bool blind_poker_table::is_possible_straight_flush(const vector<card> &hand) con
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_straight_flush(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
     
     return false;
 }
@@ -1195,6 +1240,13 @@ bool blind_poker_table::is_possible_4_of_a_kind(const vector<card> &hand) const
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_4_of_a_kind(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
+    
     return false;
 }
 
@@ -1209,6 +1261,12 @@ bool blind_poker_table::is_possible_full_house(const vector<card> &hand) const
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_full_house(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
     
     return false;
 }
@@ -1224,6 +1282,13 @@ bool blind_poker_table::is_possible_flush(const vector<card> &hand) const
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_flush(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
+    
     return false;
 }
 
@@ -1238,6 +1303,12 @@ bool blind_poker_table::is_possible_straight(const vector<card> &hand) const
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_straight(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
     
      return false;
 }
@@ -1253,6 +1324,13 @@ bool blind_poker_table::is_possible_3_of_a_kind(const vector<card> &hand) const
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_3_of_a_kind(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
+    
     return false;
 }
 
@@ -1267,6 +1345,13 @@ bool blind_poker_table::is_possible_2_pair(const vector<card> &hand) const
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_2_pair(hand);
     
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
+    
     return false;
 }
 
@@ -1280,6 +1365,13 @@ bool blind_poker_table::is_possible_1_pair(const vector<card> &hand) const
     
     if(NUM_CARDS_PER_HAND == num_shown)
         return is_finished_hand_1_pair(hand);
+    
+    // no suit or face specified
+    if(0 == num_shown)
+    {
+        
+        
+    }
     
     return false;
 }
