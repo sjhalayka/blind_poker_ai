@@ -242,7 +242,7 @@ protected:
         {
             if(true == hand[i].shown)
             {
-                if(face <= 5 && hand[i].face == FACE_A)
+                if(face <= FACE_5 && hand[i].face == FACE_A)
                     continue;
                 
                 if(hand[i].face > face)
