@@ -1426,28 +1426,25 @@ bool blind_poker_table::hand_cards_greater_than_or_equal_to_face(const size_t fa
     return true;
 }
 
-size_t blind_poker_table::hand_get_extent_spread(const vector<card> &hand) const
+size_t blind_poker_table::hand_get_highest_face(const vector<card> &hand) const
 {
-    size_t num_shown = hand_num_shown(hand);
-    
-    if(num_shown < 2)
-        return 0;
-    
-    size_t lowest_face = FACE_A;
     size_t highest_face = FACE_2;
     
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
     {
         if(true == hand[i].shown)
         {
-            if(hand[i].face < lowest_face)
-                lowest_face = hand[i].face;
-            
             if(hand[i].face > highest_face)
                 highest_face = hand[i].face;
         }
     }
     
+    return highest_face;
+}
+
+size_t blind_poker_table::hand_get_second_highest_face(const vector<card> &hand) const
+{
+    size_t highest_face = hand_get_highest_face(hand);
     size_t second_highest_face = FACE_2;
     
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
@@ -1459,9 +1456,48 @@ size_t blind_poker_table::hand_get_extent_spread(const vector<card> &hand) const
         }
     }
     
+    return second_highest_face;
+}
+
+size_t blind_poker_table::hand_get_lowest_face(const vector<card> &hand) const
+{
+    size_t lowest_face = FACE_A;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        if(true == hand[i].shown)
+        {
+            if(hand[i].face < lowest_face)
+                lowest_face = hand[i].face;
+        }
+    }
+    
+    return lowest_face;
+}
+
+
+size_t blind_poker_table::hand_get_extent_spread(const vector<card> &hand) const
+{
+    size_t num_shown = hand_num_shown(hand);
+    
+    if(num_shown < 2)
+        return 0;
+    
+    size_t lowest_face = hand_get_lowest_face(hand);
+    size_t highest_face = hand_get_highest_face(hand);
+    size_t second_highest_face = hand_get_second_highest_face(hand);
+    
     if(highest_face == FACE_A && second_highest_face <= FACE_5)
         return second_highest_face;
     
     return highest_face - lowest_face;
 }
+
+
+
+
+
+
+
+
 

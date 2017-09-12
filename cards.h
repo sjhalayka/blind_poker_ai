@@ -67,6 +67,8 @@ using std::shuffle;
 #define STRAIGHT_FLUSH 8
 #define ROYAL_FLUSH 9
 
+#define MAX_EXTENT_SPREAD_FOR_STRAIGHT 4
+
 
 
 class card
@@ -203,6 +205,13 @@ protected:
     bool hand_cards_less_than_or_equal_to_face(const size_t face, const vector<card> &hand) const;
     bool hand_cards_greater_than_or_equal_to_face(const size_t face, const vector<card> &hand) const;
     size_t hand_get_extent_spread(const vector<card> &hand) const;
+    size_t hand_get_highest_face(const vector<card> &hand) const;
+    size_t hand_get_second_highest_face(const vector<card> &hand) const;
+    size_t hand_get_lowest_face(const vector<card> &hand) const;
+    
+    
+    
+    
     
     
     size_t current_player;
