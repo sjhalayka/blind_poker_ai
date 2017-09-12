@@ -1355,7 +1355,103 @@ size_t blind_poker_table::get_best_possible_rank(const vector<card> &hand) const
     return ret;
 }
 
+size_t blind_poker_table::hand_num_shown(const vector<card> &hand) const
+{
+    size_t num_shown = 0;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        if(true == hand[i].shown)
+            num_shown++;
+    
+    return num_shown;
+}
 
+bool blind_poker_table::does_hand_contain_multiple_suits(const vector<card> &hand) const
+{
+    map<size_t, size_t> unique_suits;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        if(true == hand[i].shown)
+            unique_suits[hand[i].suit]++;
+    
+    if(unique_suits.size() > 1)
+        return true;
+    
+    return false;
+}
 
+bool blind_poker_table::does_hand_contain_face_multiples(const vector<card> &hand) const
+{
+    map<size_t, size_t> unique_faces;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+        if(true == hand[i].shown)
+            unique_faces[hand[i].face]++;
+    
+    for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
+        if(ci->second > 1)
+            return true;
+    
+    return false;
+}
 
+bool blind_poker_table::hand_cards_less_than_or_equal_to(const size_t face, const vector<card> &hand) const
+{
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        if(true == hand[i].shown)
+        {
+            if(face <= FACE_5 && hand[i].face == FACE_A)
+                continue;
+            
+            if(hand[i].face > face)
+                return false;
+        }
+    }
+    
+    return true;
+}
+
+bool blind_poker_table::hand_cards_greater_than_or_equal_to(const size_t face, const vector<card> &hand) const
+{
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        if(true == hand[i].shown)
+        {
+            if(hand[i].face < face)
+                return false;
+        }
+    }
+    
+    return true;
+}
+
+size_t blind_poker_table::hand_get_extent_spread(const vector<card> &hand) const
+{
+    size_t lowest_face = FACE_A;
+    size_t highest_face = FACE_2;
+    size_t second_highest_face = FACE_2;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        if(true == hand[i].shown)
+        {
+            if(hand[i].face < lowest_face)
+            {
+                lowest_face = hand[i].face;
+            }
+            
+            if(hand[i].face > highest_face)
+            {
+                second_highest_face = highest_face;
+                highest_face = hand[i].face;
+            }
+        }
+    }
+    
+    if(highest_face == FACE_A && second_highest_face <= FACE_5)
+        return second_highest_face;
+    
+    return highest_face - lowest_face;
+}
 

@@ -27,19 +27,20 @@ using std::shuffle;
 #define SUIT_DIAMONDS 2
 #define SUIT_CLUBS 3
 
-#define FACE_2 0
-#define FACE_3 1
-#define FACE_4 2
-#define FACE_5 3
-#define FACE_6 4
-#define FACE_7 5
-#define FACE_8 6
-#define FACE_9 7
-#define FACE_10 8
-#define FACE_J 9
-#define FACE_Q 10
-#define FACE_K 11
-#define FACE_A 12
+#define FACE_A_LOW 0
+#define FACE_2 1
+#define FACE_3 2
+#define FACE_4 3
+#define FACE_5 4
+#define FACE_6 5
+#define FACE_7 6
+#define FACE_8 7
+#define FACE_9 8
+#define FACE_10 9
+#define FACE_J 10
+#define FACE_Q 11
+#define FACE_K 12
+#define FACE_A 13
 
 #define NUM_PLAYERS 5
 #define NUM_CARDS_PER_HAND 5
@@ -196,77 +197,13 @@ protected:
     bool is_finished_hand_1_pair(const vector<card> &hand) const;
     bool is_finished_hand_high_card(const vector<card> &hand) const;
     
-    size_t hand_num_shown(const vector<card> &hand) const
-    {
-        size_t num_shown = 0;
-        
-        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-            if(true == hand[i].shown)
-                num_shown++;
-        
-        return num_shown;
-    }
+    size_t hand_num_shown(const vector<card> &hand) const;
+    bool does_hand_contain_multiple_suits(const vector<card> &hand) const;
+    bool does_hand_contain_face_multiples(const vector<card> &hand) const;
+    bool hand_cards_less_than_or_equal_to(const size_t face, const vector<card> &hand) const;
+    bool hand_cards_greater_than_or_equal_to(const size_t face, const vector<card> &hand) const;
     
-    bool does_hand_contain_multiple_suits(const vector<card> &hand) const
-    {
-        map<size_t, size_t> unique_suits;
-        
-        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-            if(true == hand[i].shown)
-               unique_suits[hand[i].suit]++;
-        
-        if(unique_suits.size() > 1)
-            return true;
-        
-        return false;
-    }
-    
-    bool does_hand_contain_face_multiples(const vector<card> &hand) const
-    {
-        map<size_t, size_t> unique_faces;
-        
-        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-            if(true == hand[i].shown)
-                unique_faces[hand[i].face]++;
-        
-        for(map<size_t, size_t>::const_iterator ci = unique_faces.begin(); ci != unique_faces.end(); ci++)
-            if(ci->second > 1)
-                return true;
-        
-        return false;
-    }
-    
-    bool hand_cards_less_than_or_equal_to(const size_t face, const vector<card> &hand) const
-    {
-        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-        {
-            if(true == hand[i].shown)
-            {
-                if(face <= FACE_5 && hand[i].face == FACE_A)
-                    continue;
-                
-                if(hand[i].face > face)
-                    return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    bool hand_cards_greater_than_or_equal_to(const size_t face, const vector<card> &hand) const
-    {
-        for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
-        {
-            if(true == hand[i].shown)
-            {
-                if(hand[i].face < face)
-                    return false;
-            }
-        }
-        
-        return true;
-    }
-    
+    size_t hand_get_extent_spread(const vector<card> &hand) const;
     
     
     size_t current_player;
