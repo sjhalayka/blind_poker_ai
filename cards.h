@@ -200,9 +200,8 @@ protected:
     size_t hand_num_shown(const vector<card> &hand) const;
     bool does_hand_contain_multiple_suits(const vector<card> &hand) const;
     bool does_hand_contain_face_multiples(const vector<card> &hand) const;
-    bool hand_cards_less_than_or_equal_to(const size_t face, const vector<card> &hand) const;
-    bool hand_cards_greater_than_or_equal_to(const size_t face, const vector<card> &hand) const;
-    
+    bool hand_cards_less_than_or_equal_to_face(const size_t face, const vector<card> &hand) const;
+    bool hand_cards_greater_than_or_equal_to_face(const size_t face, const vector<card> &hand) const;
     size_t hand_get_extent_spread(const vector<card> &hand) const;
     
     

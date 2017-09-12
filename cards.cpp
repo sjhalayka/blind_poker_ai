@@ -1395,7 +1395,7 @@ bool blind_poker_table::does_hand_contain_face_multiples(const vector<card> &han
     return false;
 }
 
-bool blind_poker_table::hand_cards_less_than_or_equal_to(const size_t face, const vector<card> &hand) const
+bool blind_poker_table::hand_cards_less_than_or_equal_to_face(const size_t face, const vector<card> &hand) const
 {
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
     {
@@ -1412,7 +1412,7 @@ bool blind_poker_table::hand_cards_less_than_or_equal_to(const size_t face, cons
     return true;
 }
 
-bool blind_poker_table::hand_cards_greater_than_or_equal_to(const size_t face, const vector<card> &hand) const
+bool blind_poker_table::hand_cards_greater_than_or_equal_to_face(const size_t face, const vector<card> &hand) const
 {
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
     {
@@ -1428,24 +1428,34 @@ bool blind_poker_table::hand_cards_greater_than_or_equal_to(const size_t face, c
 
 size_t blind_poker_table::hand_get_extent_spread(const vector<card> &hand) const
 {
+    size_t num_shown = hand_num_shown(hand);
+    
+    if(num_shown < 2)
+        return 0;
+    
     size_t lowest_face = FACE_A;
     size_t highest_face = FACE_2;
-    size_t second_highest_face = FACE_2;
     
     for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
     {
         if(true == hand[i].shown)
         {
             if(hand[i].face < lowest_face)
-            {
                 lowest_face = hand[i].face;
-            }
             
             if(hand[i].face > highest_face)
-            {
-                second_highest_face = highest_face;
                 highest_face = hand[i].face;
-            }
+        }
+    }
+    
+    size_t second_highest_face = FACE_2;
+    
+    for(size_t i = 0; i < NUM_CARDS_PER_HAND; i++)
+    {
+        if(true == hand[i].shown)
+        {
+            if(hand[i].face > second_highest_face && hand[i].face != highest_face)
+                second_highest_face = hand[i].face;
         }
     }
     
